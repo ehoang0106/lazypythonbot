@@ -137,7 +137,6 @@ async def test(ctx, *, arg):
             'Shut the fuck up noob!',
             'Á à, con chó này dám chửi bố mày à?',
             'Anh em ơi, có thằng chó nó chửi em kìa',
-
             ]
 
     bot_reply = random.choice(arg)
