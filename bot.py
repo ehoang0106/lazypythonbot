@@ -73,7 +73,7 @@ async def test(ctx):
         'Tâm gánh tạ'
 
     ]
-
+    
     response = random.choice(bot_chui)
     await ctx.send(response)
 
