@@ -17,7 +17,10 @@ client = discord.Client()
 @bot.event
 async def on_ready():
     print(f'{bot.user.name} has connected to Discord!')
+    print('Connected to bot: {}'.format(bot.user.name))
+    print('Bot ID: {}'.format(bot.user.id))
 
+    await bot.change_presence(status=discord.Status.online, activity=discord.Game('!chuibot để chửi lộn'))
 #call bot
 @bot.command(name='bot', help='Call bot')
 async def test(ctx):
