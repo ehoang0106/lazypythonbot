@@ -2,7 +2,6 @@
 import os
 import random
 import discord
-import bj
 
 
 from discord.ext import commands
@@ -20,7 +19,11 @@ async def on_ready():
     print('Connected to bot: {}'.format(bot.user.name))
     print('Bot ID: {}'.format(bot.user.id))
 
-    await bot.change_presence(status=discord.Status.online, activity=discord.Game('!chuibot để chửi lộn'))
+    await bot.change_presence(status=discord.Status.online, activity=discord.Game('!help'))
+
+
+
+
 #call bot
 @bot.command(name='bot', help='Call bot')
 async def test(ctx):
@@ -83,13 +86,14 @@ async def roll(ctx, number_of_dice: int):
         str(random.choice(range(1, number_of_sides + 1)))
         for _ in range(number_of_dice)
     ]
+    print('Code run successful!')
     await ctx.send('Here is your dice :game_die: :')
     await ctx.send(', '.join(dice))
 
 #create channel
-@bot.command(name='create-channel')
+@bot.command(name='create-channel', help = 'Create channel + {channel_name}')
 @commands.has_role('Admin')
-async def create_channel(ctx, channel_name='new-channel'):
+async def create_channel(ctx, *, channel_name):
     guild = ctx.guild
     existing_channel = discord.utils.get(guild.channels, name=channel_name)
     if not existing_channel:
@@ -101,17 +105,22 @@ async def on_command_error(ctx, error):
     if isinstance(error, commands.errors.CheckFailure):
         await ctx.send('You do not have the correct role for this command.')
 
+
+
 #roll number from 1 to picked number
+
 @bot.command(name='roll', help = 'Roll a random picked number start from 1')
 async def random_number(ctx, number: int):
-    rnumber = [
-        str(random.choice(range(1, number+1)))
-    ]
-    number_emoji =[':zero:,:one:,:two:,:three:,:four:,:five:,:six:']
-    final_number = []
-    
-    
-    await ctx.send(' '.join(rnumber))
+    rnumber = random.randint(1,number)
+    print('Code run successful!')
+
+    number_emoji =[':zero:',':one:',':two:',':three:',':four:',':five:',':six:',':seven:',':eight:',':nine:']
+    emoji = []
+    while rnumber  !=0:
+        nnumber = rnumber % 10
+        rnumber = int(rnumber / 10)
+        emoji.insert(0,number_emoji[nnumber])
+    await ctx.send(' '.join(emoji))
 
 
 @bot.command(name='chuibot', help = 'Toxic with bot')
