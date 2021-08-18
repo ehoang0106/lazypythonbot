@@ -6,6 +6,8 @@ from discord import message
 import requests
 import json
 from quotes import list_quotes, cat_images
+import time
+
 
 from discord.ext import commands
 from dotenv import load_dotenv
@@ -14,11 +16,11 @@ from discord_components import DiscordComponents, Button, ButtonStyle, Interacti
 from discord.ext import commands
 from discord.ext.commands import Bot
 
-
+PREFIX = '!'
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 
-bot = commands.Bot(command_prefix='$')
+bot = commands.Bot(command_prefix=PREFIX, help_command=None, case_insensitive=True)
 client = discord.Client()
 
 
@@ -29,11 +31,27 @@ async def on_ready():
     print('Connected to bot: {}'.format(bot.user.name))
     print('Bot ID: {}'.format(bot.user.id))
 
-    await bot.change_presence(status=discord.Status.online, activity=discord.Game('$command'))
+    await bot.change_presence(status=discord.Status.online, activity=discord.Game('!help'))
+    
 
+@bot.command()
+async def help(ctx):
+    embed=discord.Embed(title="Help command", description=f'Prefix of bot: **`{PREFIX}`**',color=discord.Color.blurple())
 
+    embed.set_author(name=ctx.author.display_name, url="https://khoahoang.net", icon_url=ctx.author.avatar_url)
 
+    embed.add_field(name="Danh sách lệnh của bot: ", value="`command\n` `bot\n` `chuibot\n` `quotes\n` `create-channel\n` `roll\n` `roll_dice\n` `khoa\n` `nhat\n` `tam\n`", inline=False)
+    embed.set_footer(text="Sử dụng $command {lệnh} để xem chi tiết.")
 
+    await ctx.send(embed=embed)
+
+#ping
+
+@bot.command()
+async def ping(ctx):
+     await ctx.send(f'Pong! In {round(bot.latency * 1000)}ms')
+
+    
 #call bot
 @bot.command(name='bot', help='Call bot')
 async def test(ctx):
@@ -67,7 +85,9 @@ async def test(ctx):
     bot_chui = [
         'Nhật xấu trai, đánh dota sida',
         'Nhật đi hút cần với Khoa rồi, tí quay lại',
-        'Nhật trả bài rồi, mai quay lại nha'
+        'Nhật trả bài rồi, mai quay lại nha',
+        'Em đuối quá anh ơi...',
+        ''
 
     ]
 
@@ -80,7 +100,11 @@ async def test(ctx):
     bot_chui = [
         'Anh Tâm ơi cứu em',
         'Anh Tâm ơi cái này làm sao',
-        'Tâm gánh tạ'
+        'Tâm gánh tạ',
+        'Chú Tâm',
+        'Fucking hell dude',
+        'Gàaa....'
+
 
     ]
     
@@ -252,16 +276,7 @@ async def embed(ctx):
     await ctx.send(embed=embed)
 
 
-@bot.command(name='command', help='show list command')
-async def help(ctx):
-    embed=discord.Embed(title='Help Command')
 
-    embed.set_author(name=ctx.author.display_name, url="https://khoahoang.net", icon_url=ctx.author.avatar_url)
-
-    embed.add_field(name="Danh sách lệnh của bot: ", value="`command\n` `bot\n` `chuibot\n` `quotes\n` `create-channel\n` `roll\n` `roll_dice\n` `khoa\n` `nhat\n` `tam\n`", inline=False)
-    embed.set_footer(text="Sử dụng $command {lệnh} để xem chi tiết.")
-
-    await ctx.send(embed=embed)
 
 
 
