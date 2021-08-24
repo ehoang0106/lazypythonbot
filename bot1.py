@@ -58,8 +58,8 @@ async def ping(ctx):
 async def thinh(ctx):
     heart_icon = [':heart:',':orange_heart:',':yellow_heart:',':green_heart:',':blue_heart:',':heart_on_fire:',':heart_decoration:',':two_hearts:',':love_letter:']
     embed=discord.Embed(color=discord.Color.from_rgb(255,192,203))
-    embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar_url)
     line = random.choice(open('thinh.txt', encoding='utf-8').readlines())
+    #if you want to add blank -> "\u200b"
     embed.add_field(name=random.choice(heart_icon),value=line)
     await ctx.send(embed=embed)
 
