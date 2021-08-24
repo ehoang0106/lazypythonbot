@@ -7,6 +7,8 @@ import requests
 import json
 from quotes import list_quotes, cat_images
 import time
+from discord import Embed, Emoji
+from discord.ext.commands import Bot
 
 
 from discord.ext import commands
@@ -40,8 +42,8 @@ async def help(ctx):
 
     embed.set_author(name=ctx.author.display_name, url="https://khoahoang.net", icon_url=ctx.author.avatar_url)
 
-    embed.add_field(name="Danh sách lệnh của bot: ", value="`command\n` `bot\n` `chuibot\n` `quotes\n` `create-channel\n` `roll\n` `roll_dice\n` `khoa\n` `nhat\n` `tam\n`", inline=False)
-    embed.set_footer(text="Sử dụng $command {lệnh} để xem chi tiết.")
+    embed.add_field(name="Danh sách lệnh của bot: ", value="`help` `ping` `thinh` `bot` `chuibot` `quotes` `create-channel` `roll` `roll_dice` `khoa` `nhat` `tam`", inline=False)
+    embed.set_footer(text=f"Sử dụng {PREFIX}help [lệnh] để xem chi tiết.")
 
     await ctx.send(embed=embed)
 
@@ -49,9 +51,18 @@ async def help(ctx):
 
 @bot.command()
 async def ping(ctx):
-     await ctx.send(f'Pong! In {round(bot.latency * 1000)}ms')
+     await ctx.send(f':white_check_mark: Pong! :ping_pong: In {round(bot.latency * 1000)}ms ')
 
-    
+#thinh
+@bot.command()
+async def thinh(ctx):
+    heart_icon = [':heart:',':orange_heart:',':yellow_heart:',':green_heart:',':blue_heart:',':heart_on_fire:',':heart_decoration:',':two_hearts:',':love_letter:']
+    embed=discord.Embed(color=discord.Color.from_rgb(255,192,203))
+    embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar_url)
+    line = random.choice(open('thinh.txt', encoding='utf-8').readlines())
+    embed.add_field(name=random.choice(heart_icon),value=line)
+    await ctx.send(embed=embed)
+
 #call bot
 @bot.command(name='bot', help='Call bot')
 async def test(ctx):
@@ -112,17 +123,7 @@ async def test(ctx):
     await ctx.send(response)
 
 
-#roll dice with input number of dice and number of side
-@bot.command(name='roll_dice', help='Simulates rolling dice. Must pick number of dice')
-async def roll(ctx, number_of_dice: int):
-    number_of_sides = 6
-    dice = [
-        str(random.choice(range(1, number_of_sides + 1)))
-        for _ in range(number_of_dice)
-    ]
-    print('Code run successful!')
-    await ctx.send('Here is your dice :game_die: :')
-    await ctx.send(', '.join(dice))
+
 
 #create channel
 @bot.command(name='create-channel', help = 'Create channel + {channel_name}')
@@ -154,7 +155,30 @@ async def random_number(ctx, number: int):
         nnumber = rnumber % 10
         rnumber = int(rnumber / 10)
         emoji.insert(0,number_emoji[nnumber])
+
+    zemoji = discord.utils.get(bot.emojis, name='ld')
+    
+
+    await ctx.send('The random number is:')
+    await ctx.send(str(zemoji))
+    time.sleep(3)
     await ctx.send(' '.join(emoji))
+
+
+#roll dice with input number of dice and number of side
+@bot.command(name='roll_dice', help='Simulates rolling dice. Must pick number of dice')
+async def roll(ctx, number_of_dice: int):
+    number_of_sides = 6
+    dice = [
+        str(random.choice(range(1, number_of_sides + 1)))
+        for _ in range(number_of_dice)
+    ]
+
+    
+    await ctx.send('Here is your dice :game_die: :')
+    await ctx.send(', '.join(dice))
+
+
 
 
 @bot.command(name='chuibot', help = 'Toxic with bot')
@@ -184,7 +208,7 @@ async def test(ctx, *, arg):
             'Á à, con chó này dám chửi bố mày à?',
             'Anh em ơi, có thằng chó nó chửi em kìa',
             ]
-    emoji = ':like:'
+    
     bot_reply = random.choice(arg)
     await ctx.send(bot_reply)
     
