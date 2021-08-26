@@ -37,7 +37,7 @@ async def on_ready():
     await bot.change_presence(status=discord.Status.online, activity=discord.Game('!help'))
     while True:
         now = datetime.datetime.now()
-        await bot.get_channel(ustime).edit(name=f"Time 🕘 {now.hour}:{now.minute} PSD")
+        await bot.get_channel(ustime).edit(name=f"Time 🕘{now.hour}:{now.minute} PSD")
         await asyncio.sleep(60)
 #command bot
 @bot.command()
