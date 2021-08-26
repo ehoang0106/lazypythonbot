@@ -21,7 +21,7 @@ list_quotes = [
     "The difference between stupidity and genius is that genius has its limits.",
     "War is God’s way of teaching Americans geography.",
     "If you want your children to listen, try talking softly to someone else.",
-    "I find television very educational. Every time someone turns it on, I go in the other room and read a book",
+    "I find television very educating. Every time someone turns it on, I go in the other room and read a book",
     "All you need in this life is ignorance and confidence, and then success is sure",
     "I refuse to join any club that would have me as a member.",
     "Do not take life too seriously. You will never get out of it alive."

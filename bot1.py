@@ -9,7 +9,8 @@ from quotes import list_quotes, cat_images
 import time
 from discord import Embed, Emoji
 from discord.ext.commands import Bot
-
+import asyncio
+import datetime
 
 from discord.ext import commands
 from dotenv import load_dotenv
@@ -24,7 +25,7 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 
 bot = commands.Bot(command_prefix=PREFIX, help_command=None, case_insensitive=True)
 client = discord.Client()
-
+ustime = 880562631436550265
 
 
 @bot.event
@@ -34,8 +35,11 @@ async def on_ready():
     print('Bot ID: {}'.format(bot.user.id))
 
     await bot.change_presence(status=discord.Status.online, activity=discord.Game('!help'))
-    
-
+    while True:
+        now = datetime.datetime.now()
+        await bot.get_channel(ustime).edit(name=f"Time 🕘 {now.hour}:{now.minute} PSD")
+        await asyncio.sleep(60)
+#command bot
 @bot.command()
 async def help(ctx):
     embed=discord.Embed(title="Help command", description=f'Prefix of bot: **`{PREFIX}`**',color=discord.Color.blurple())
@@ -46,6 +50,10 @@ async def help(ctx):
     embed.set_footer(text=f"Sử dụng {PREFIX}help [lệnh] để xem chi tiết.")
 
     await ctx.send(embed=embed)
+
+
+
+
 
 #ping
 
@@ -58,9 +66,10 @@ async def ping(ctx):
 async def thinh(ctx):
     heart_icon = [':heart:',':orange_heart:',':yellow_heart:',':green_heart:',':blue_heart:',':heart_on_fire:',':heart_decoration:',':two_hearts:',':love_letter:']
     embed=discord.Embed(color=discord.Color.from_rgb(255,192,203))
+    #embed.set_thumbnail(url=random.choice(cat_images))
     line = random.choice(open('thinh.txt', encoding='utf-8').readlines())
     #if you want to add blank -> "\u200b"
-    embed.add_field(name=random.choice(heart_icon),value=line)
+    embed.add_field(name=random.choice(heart_icon), value=line, inline=True)
     await ctx.send(embed=embed)
 
 #call bot
