@@ -11,7 +11,9 @@ from discord import Embed, Emoji
 from discord.ext.commands import Bot
 import asyncio
 import datetime
-
+import pytz
+from pytz import timezone
+from datetime import datetime, timedelta
 from discord.ext import commands
 from dotenv import load_dotenv
 from discord.utils import get
@@ -25,22 +27,30 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 
 bot = commands.Bot(command_prefix=PREFIX, help_command=None, case_insensitive=True)
 client = discord.Client()
-ustime = 880562631436550265
-
+us_id_channel = 880562631436550265
+au_id_channel = 880835091155279883
 
 @bot.event
 async def on_ready():
     print(f'{bot.user.name} has connected to Discord!')
     print('Connected to bot: {}'.format(bot.user.name))
     print('Bot ID: {}'.format(bot.user.id))
-
+    print(f"Ping: {round(bot.latency * 1000)} ms") 
+    
     await bot.change_presence(status=discord.Status.online, activity=discord.Game('!help'))
+
+    #set time on channel
     while True:
-        now = datetime.datetime.now()
-        await bot.get_channel(ustime).edit(name=f"Time 🕘{now.hour}:{now.minute} PSD")
+        format = "%H:%M %Z"
+        now_us = datetime.now(timezone('America/Los_Angeles'))
+        now_au = datetime.now(timezone('Australia/Sydney'))
+        await bot.get_channel(us_id_channel).edit(name=f"🕘 {now_us.strftime(format)} 🌍")
+        await bot.get_channel(au_id_channel).edit(name=f"🕟 {now_au.strftime(format)} 🌏")
         await asyncio.sleep(60)
+
+
 #command bot
-@bot.command()
+@bot.command(aliases=['h'])
 async def help(ctx):
     embed=discord.Embed(title="Help command", description=f'Prefix of bot: **`{PREFIX}`**',color=discord.Color.blurple())
 
@@ -50,8 +60,6 @@ async def help(ctx):
     embed.set_footer(text=f"Sử dụng {PREFIX}help [lệnh] để xem chi tiết.")
 
     await ctx.send(embed=embed)
-
-
 
 
 
@@ -135,7 +143,7 @@ async def test(ctx):
 
 
 #create channel
-@bot.command(name='create-channel', help = 'Create channel + {channel_name}')
+@bot.command(name='create-channel', help = 'Create channel + {channel_name}', aliases= ['cc'])
 @commands.has_role('Admin')
 async def create_channel(ctx, *, channel_name):
     guild = ctx.guild
@@ -153,11 +161,9 @@ async def on_command_error(ctx, error):
 
 #roll number from 1 to picked number
 
-@bot.command(name='roll', help = 'Roll a random picked number start from 1')
+@bot.command(name='roll', help = 'Roll a random picked number start from 1', aliases=['r'])
 async def random_number(ctx, number: int):
     rnumber = random.randint(1,number)
-    print('Code run successful!')
-
     number_emoji =[':zero:',':one:',':two:',':three:',':four:',':five:',':six:',':seven:',':eight:',':nine:']
     emoji = []
     while rnumber  !=0:
@@ -165,17 +171,17 @@ async def random_number(ctx, number: int):
         rnumber = int(rnumber / 10)
         emoji.insert(0,number_emoji[nnumber])
 
-    zemoji = discord.utils.get(bot.emojis, name='ld')
+    zemoji = discord.utils.get(bot.emojis, name='ld2')
     
-
+    
     await ctx.send('The random number is:')
-    await ctx.send(str(zemoji))
-    time.sleep(3)
-    await ctx.send(' '.join(emoji))
+    result = await ctx.send(str(zemoji))
+    time.sleep(4)
+    await result.edit(content = ' '.join(emoji))
 
 
 #roll dice with input number of dice and number of side
-@bot.command(name='roll_dice', help='Simulates rolling dice. Must pick number of dice')
+@bot.command(name='roll_dice', help='Simulates rolling dice. Must pick number of dice', aliases=['rd'])
 async def roll(ctx, number_of_dice: int):
     number_of_sides = 6
     dice = [
