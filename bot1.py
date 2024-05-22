@@ -2,22 +2,16 @@
 import os
 import random
 import discord
-from discord import message
-import requests
-import json
 from quotes import list_quotes, cat_images
 import time
-from discord import Embed, Emoji
 from discord.ext.commands import Bot
 import asyncio
 import datetime
-import pytz
 from pytz import timezone
 from datetime import datetime, timedelta
 from discord.ext import commands
 from dotenv import load_dotenv
 from discord.utils import get
-from discord_components import DiscordComponents, Button, ButtonStyle, InteractionType
 from discord.ext import commands
 from discord.ext.commands import Bot
 
